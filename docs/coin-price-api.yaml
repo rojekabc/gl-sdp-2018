@@ -1,0 +1,304 @@
+swagger: "2.0"
+info:
+  description: "This is the API definition for the CoinPrice project. All rights reserved."
+  version: "0.0.1"
+  title: "CoinPrice"
+  contact:
+    email: "piotr.rojewski@globallogic.com"
+host: "127.0.0.1:8080"
+basePath: "/api/v1"
+tags:
+- name: "coin"
+  description: "Manage coins"
+- name: "user"
+  description: "Manage users"
+- name: "exchange"
+  description: "Manage exchanges"
+schemes:
+- "http"
+
+paths:
+  /coin/exchange/{exchange}:
+    post:
+      tags:
+      - "coin"
+      summary: "Set coin price"
+      description: "This operation set actual coin price"
+      operationId: "setCoin"
+      consumes:
+      - "application/json"
+      parameters:
+      - name: "exchange"
+        in: "path"
+        description: "The identifier of exchange"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Pet object with actual coin price"
+        required: true
+        schema:
+          $ref: "#/definitions/CoinPrice"
+      responses:
+        204:
+          description: "Ok. No response body"
+        400:
+          description: "Wrong request data"
+        500:
+          description: Internal server error. Contact with administrator
+
+  /coin/{coin}:
+    get:
+      tags:
+      - "coin"
+      summary: "Get coin prices"
+      description: "Get information about coin price"
+      parameters: 
+      - name: "coin"
+        in: "path"
+        description: "The coin symbol"
+        required: true
+        type: "string"
+      - name: "exchange"
+        in: "query"
+        description: "Filter by the exchange"
+        required: false
+        type: "string"
+      - name: "asset"
+        in: "query"
+        description: "The asset coin symbol"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: Coin not found.
+        500:
+          description: Internal server error. Contact with administrator
+  
+  /coin/list:
+    get:
+      tags:
+      - "coin"
+      summary: "List of coins"
+      description: "Get the list of all registered coins"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            description: The array of registered coin symbols.
+            items:
+              type: string
+        500:
+          description: Internal server error. Contact with administrator
+  /user:
+    put:
+      tags: 
+      - "user"
+      summary: "Append new user"
+      description: "Allows create new user"
+      parameters: 
+      - name: "request body"
+        in: "body"
+        required: true
+        schema:
+          $ref: '#/definitions/UserCreate'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInfo'
+        500:
+          description: Internal server error. Contact with administrator
+            
+  /user/{user}:
+    get:
+      tags: 
+      - "user"
+      summary: "Get user info"
+      description: "Get information about user"
+      parameters: 
+      - name: "user"
+        in: "path"
+        required: true
+        type: string
+        description: "The user identifier"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInfo'            
+    delete:
+      tags: 
+      - "user"
+      summary: "Remove user"
+      description: "Remove information about user"
+      parameters: 
+      - name: "user"
+        in: "path"
+        required: true
+        type: string
+        description: "The user identifier"
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal server error. Contact with administrator
+
+  /user/{user}/limit:
+    get:
+      tags:
+      - "user"
+      summary: "Get user limit"
+      description: "Get the user request limit per day"
+      parameters: 
+      - name: "user"
+        in: "path"
+        description: "The user identifier"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/UserInfo"
+        500:
+          description: Internal server error. Contact with administrator
+    delete:
+      summary: "Delete user limit"
+      description: "Delete the user limit - user will be unlimited"
+      tags:
+      - "user"
+      parameters: 
+      - name: "user"
+        in: "path"
+        description: "The user identifier"
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: "User not found"
+        500:
+          description: Internal server error. Contact with administrator
+            
+  /user/{user}/limit/{limit}:
+    put:
+      tags:
+      - "user"
+      summary: "Set user limit"
+      description: "Set the user requet limit"
+      parameters: 
+      - name: "user"
+        in: "path"
+        description: "The user identifier"
+        required: true
+        type: string
+      - name: "limit"
+        in: "path"
+        type: number
+        format: int32
+        minimum: 0
+        required: true
+        description: "The value of user limit"
+      responses:
+        200:
+          description: OK
+        500:
+          description: Internal server error. Contact with administrator
+          
+  /exchange/list:
+    get:
+      tags: 
+      - "exchange"
+      summary: "List exchange"
+      description: "Get the list of existing exchanges in the system"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            description: "The array of exchange identifying symbols"
+            items:
+              type: string
+        500:
+          description: Internal server error. Contact with administrator
+          
+  /exchange/{exchange}:
+    parameters:
+    - name: "exchange"
+      in: "path"
+      description: "The identifier of exchange"
+      required: true
+      type: "string"
+    delete:
+      tags: 
+      - "exchange"
+      summary: "Remove the exchange"
+      description: "Remove all data from selected exchage"
+      responses:
+        204:
+          description: OK. No content.
+        500:
+          description: Internal server error. Contact with administrator
+          
+    get:
+      tags: 
+      - "exchange"
+      summary: "Get exchange data"
+      description: "Get all prices regstered for exchange"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CoinInfo'
+        500:
+          description: Internal server error. Contact with administrator
+
+definitions:
+  CoinPrice:
+    type: object
+    properties:
+      coin:
+        type: string
+      assetCoin:
+        type: string
+      quantity:
+        type: number
+  CoinInfo:
+    type: array
+    items:
+      type: object
+      properties:
+        coin:
+          type: string
+        assetCoin:
+          type: string
+        quantity:
+          type: number
+        exchange:
+          type: string
+  UserInfo:
+    type: object
+    properties:
+      userName:
+        type: string
+      userId:
+        type: string
+      userLimit:
+        type: number
+        format: int32
+      userCounter:
+        type: number
+        format: int32
+  UserCreate:
+    type: object
+    properties:
+      userName:
+        type: string
+      userLimit:
+        type: number
+        format: int32
