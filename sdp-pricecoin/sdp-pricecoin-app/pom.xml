@@ -28,6 +28,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Price Coin API -->
+        <dependency>
+            <groupId>com.gl.sdp.pricecoin</groupId>
+            <artifactId>sdp-pricecoin-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
