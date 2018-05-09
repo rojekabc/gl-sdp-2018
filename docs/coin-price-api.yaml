@@ -79,6 +79,8 @@ paths:
             $ref: '#/definitions/CoinInfo'
         '401':
           description: Not authorized. User not found.
+        '403':
+          description: Forbidden. User quota.
         '404':
           description: Coin not found.
         '500':

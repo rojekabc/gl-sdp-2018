@@ -2,13 +2,11 @@ package com.gl.sdp.pricecoin.sl;
 
 import com.gl.sdp.pricecoin.bl.CoinPriceBO;
 import com.gl.sdp.pricecoin.bl.CoinService;
+import com.gl.sdp.pricecoin.bl.exceptions.QuotaUserPriceCoinException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -55,4 +53,10 @@ public class CoinEndpointImpl implements CoinEndpoint {
     {
         return coinService.listCoins();
     }
+
+    @ExceptionHandler(QuotaUserPriceCoinException.class)
+    public ResponseEntity<String> handleQuota(QuotaUserPriceCoinException e) {
+        return new ResponseEntity<>("Forbidden. User quota.", HttpStatus.FORBIDDEN);
+    }
+
 }
