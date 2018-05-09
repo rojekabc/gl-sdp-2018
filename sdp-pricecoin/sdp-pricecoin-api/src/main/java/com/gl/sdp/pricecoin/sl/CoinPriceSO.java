@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 public class CoinPriceSO implements Serializable {
     private String coin;
     private String assetCoin;
-    private BigDecimal quantity;
+    private String quantity;
 
     public String getCoin() {
         return coin;
@@ -24,11 +24,11 @@ public class CoinPriceSO implements Serializable {
         this.assetCoin = assetCoin;
     }
 
-    public BigDecimal getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
 }

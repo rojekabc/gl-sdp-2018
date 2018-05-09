@@ -17,7 +17,7 @@ public class CoinPrice implements Serializable {
 
     /** Asset coin symbol. */
     @Column
-    private String assetCoint;
+    private String assetCoin;
 
     /** Quantity of asset coin exchanged to one coin. */
     @Column
@@ -43,12 +43,12 @@ public class CoinPrice implements Serializable {
         this.coin = coin;
     }
 
-    public String getAssetCoint() {
-        return assetCoint;
+    public String getAssetCoin() {
+        return assetCoin;
     }
 
-    public void setAssetCoint(String assetCoint) {
-        this.assetCoint = assetCoint;
+    public void setAssetCoin(String assetCoin) {
+        this.assetCoin = assetCoin;
     }
 
     public BigDecimal getQuantity() {
