@@ -77,6 +77,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/CoinInfo'
+        '401':
+          description: Not authorized. User not found.
         '404':
           description: Coin not found.
         '500':
@@ -91,7 +93,6 @@ paths:
         '200':
           description: OK
           schema:
-            type: array
             description: The array of registered coin symbols.
             items:
               type: string

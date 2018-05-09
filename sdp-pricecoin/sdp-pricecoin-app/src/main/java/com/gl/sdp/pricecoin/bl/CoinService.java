@@ -20,6 +20,9 @@ public class CoinService {
     private ExchangeService exchangeService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private CoinPriceDao coinPriceDao;
 
     @Transactional
@@ -44,8 +47,10 @@ public class CoinService {
     }
 
     public List<CoinPriceBO> getCoinPrices(String user, String coin, String exchange, String asset) {
-        List<CoinPrice> coinPrices;
+        // validate user
+        userService.checkUser(user);
         // retrieve data
+        List<CoinPrice> coinPrices;
         if (exchange == null) {
             if ( asset == null) {
                 coinPrices = coinPriceDao.findByCoin(coin);
@@ -67,9 +72,6 @@ public class CoinService {
 
     public List<String> listCoins() {
         return coinPriceDao.listCoins();
-        //.stream()
-        //        .map(CoinPrice::getCoin)
-        //        .collect(Collectors.toList());
     }
 
     public CoinPriceBO convert(CoinPrice coinPrice) {

@@ -21,9 +21,9 @@ public class User implements Serializable {
     @Column
     private String user;
 
-    /** The user request limit per day. */
+    /** The user request userLimit per day. */
     @Column
-    private int limit;
+    private int userLimit;
 
     /** The user request counter. */
     @Column
@@ -53,12 +53,12 @@ public class User implements Serializable {
         this.user = user;
     }
 
-    public int getLimit() {
-        return limit;
+    public int getUserLimit() {
+        return userLimit;
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setUserLimit(int userLimit) {
+        this.userLimit = userLimit;
     }
 
     public int getCounter() {
